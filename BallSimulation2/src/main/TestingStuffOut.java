@@ -109,7 +109,7 @@ public class TestingStuffOut extends JPanel{
 
 	public PhysicalVector2D calculateUnweightedChange(PhysicalVector2D posChange, PhysicalVector2D velChange){
 		//see https://en.wikipedia.org/wiki/Elastic_collision
-		return multiply(posChange, dot(velChange, posChange) / posChange.magnitude());
+		return multiply(posChange, dot(velChange, posChange) / Math.pow(posChange.magnitude(),2));
 	}
 
 
