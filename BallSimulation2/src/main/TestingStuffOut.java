@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 
 public class TestingStuffOut extends JPanel{
 
+	//TODO: Cleanup code
+	
 	public static void main(String[] args) throws InterruptedException {
 		Ball one = new Ball(108.0,8.0,0.0,1.0,8.0);
 		Ball two = new Ball(116.00,124,0.0,-1.0,8.0);
@@ -28,12 +30,11 @@ public class TestingStuffOut extends JPanel{
 		frame.repaint();
 		
 		temp.setNextCollisionPoint();
-		System.out.println(temp.collisions.get(0).absoluteTime);
 
 		for(int i = 0; i < 1000; i++){
 			temp.update(0.1);
 			frame.repaint();
-			Thread.sleep(1);
+			Thread.sleep(1); //TODO: replace with generating future collision.
 			System.out.println(temp.officialTime);
 		}
 		
@@ -54,6 +55,7 @@ public class TestingStuffOut extends JPanel{
 	 * two null balls.
 	 */
 	public void setNextCollisionPoint(){
+		//TODO: USE FUTURE STATE OF BALLS
 		double currentTime = getOfficialTime();
 		Ball ball1 = null;
 		Ball ball2 = null;
