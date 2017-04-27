@@ -4,6 +4,7 @@ import static main.PhysicalVector2D.*;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,7 +12,7 @@ import javax.swing.JPanel;
 public class TestingStuffOut extends JPanel{
 
 	public static void main(String[] args) throws InterruptedException {
-		Ball one = new Ball(108.0,108.0,0.0,1.0,8.0);
+		Ball one = new Ball(108.0,8.0,0.0,1.0,8.0);
 		Ball two = new Ball(116.00,124,0.0,-1.0,8.0);
 
 		JFrame frame = new JFrame();
@@ -25,20 +26,18 @@ public class TestingStuffOut extends JPanel{
 
 		frame.setVisible(true);
 		frame.repaint();
-		Thread.sleep(1000);
-		temp.update();
-		frame.repaint();
-		Thread.sleep(1000);
+		
+		temp.setNextCollisionPoint();
+		System.out.println(temp.collisions.get(0).absoluteTime);
 
-		for(int i = 0; i < 100; i++){
-			one.update(.01);
-			two.update(.01);
+		for(int i = 0; i < 1000; i++){
+			temp.update(0.1);
 			frame.repaint();
-			Thread.sleep(10);
+			Thread.sleep(1);
+			System.out.println(temp.officialTime);
 		}
 		
-		System.out.println(one.getVel().x +" " + one.getVel().y);
-		System.out.println(two.getVel().x +" " + two.getVel().y);
+
 
 
 	}
@@ -49,7 +48,13 @@ public class TestingStuffOut extends JPanel{
 		balls.add(one);
 	}
 
-	public void update(){
+	/**
+	 * Called automatically in update if there are no more collision points, can be called manualy whenever, even in a 
+	 * different thread. If no collisions in the future then simply make a new collision object with t = double max value and 
+	 * two null balls.
+	 */
+	public void setNextCollisionPoint(){
+		double currentTime = getOfficialTime();
 		Ball ball1 = null;
 		Ball ball2 = null;
 		double shortestTime = Double.MAX_VALUE;
@@ -57,7 +62,7 @@ public class TestingStuffOut extends JPanel{
 			for(Ball b2 : balls){
 				if(b1 != b2){
 					double time = getMinCollisionTime(b1, b2);
-					if(time < shortestTime){
+					if(time < shortestTime && time > 0){
 						shortestTime = time;
 						ball1 = b1;
 						ball2 = b2;
@@ -65,11 +70,80 @@ public class TestingStuffOut extends JPanel{
 				}
 			}
 		}
-		for(Ball b : balls){
-			b.update(shortestTime);
-		}
-		collision(ball1, ball2);
+		collisions.add(new Collision(ball1, ball2, shortestTime + currentTime));
+		
+		//TODO: Add collisions with walls
 	}
+	
+	private class Collision{
+		final Ball b1;
+		final Ball b2;
+		final double absoluteTime;
+		
+		Collision(Ball b1, Ball b2, double absoluteTime){
+			this.b1 = b1;
+			this.b2 = b2;
+			this.absoluteTime = absoluteTime;
+		}
+	}
+	
+	ArrayList<Collision> collisions = new ArrayList<Collision>();
+	public void update(double dt){
+		double currentTime = officialTime;
+		double endTime = officialTime + dt;
+		
+		while(true){
+			if(collisions.size() == 0){
+				setNextCollisionPoint();
+			}
+			Collision next = collisions.get(0);
+			
+			if(next.absoluteTime <= endTime){
+				moveAllBalls(next.absoluteTime - currentTime);
+				currentTime = next.absoluteTime;
+				collision(next.b1, next.b2);
+				collisions.remove(0);
+			}
+			else{
+				break;
+			}
+		}
+		
+		moveAllBalls(endTime - currentTime);
+		officialTime = endTime;
+		//TODO: Make it not possible to mess this part up
+		
+
+	}
+	
+	private void moveAllBalls(double dt){
+		for(Ball b : balls){
+			b.update(dt);
+		}
+	}
+	
+	/**
+	 * All balls are currently displayed and stored at official time
+	 * @return
+	 */
+	private double officialTime = 0;
+	/**
+	 * All balls are currently displayed and stored at official time
+	 * @return
+	 */
+	public double getOfficialTime(){
+		return officialTime;
+	}
+	
+	
+
+	@Override
+	public void paintComponent(Graphics g){
+		for(Ball b : balls){
+			g.drawOval((int)(b.getPos().x - b.getRadius()), (int)(b.getPos().y - b.getRadius()), 2 * (int)b.getRadius(), 2 * (int)b.getRadius());
+		}
+	}
+	
 
 	public double getMinCollisionTime(Ball one, Ball two){
 
@@ -85,13 +159,6 @@ public class TestingStuffOut extends JPanel{
 			return Double.MAX_VALUE; //Will never collide
 		}
 		return posibilityOne < posibilityTwo? posibilityOne : posibilityTwo;
-	}
-
-	@Override
-	public void paintComponent(Graphics g){
-		for(Ball b : balls){
-			g.drawOval((int)(b.getPos().x - b.getRadius()), (int)(b.getPos().y - b.getRadius()), 2 * (int)b.getRadius(), 2 * (int)b.getRadius());
-		}
 	}
 
 
