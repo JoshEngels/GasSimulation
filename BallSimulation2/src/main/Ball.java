@@ -33,4 +33,8 @@ public class Ball {
 	public void setVelocity(PhysicalVector2D vel){
 		this.vel = vel;
 	}
+	
+	public Ball copy(){
+		return new Ball(pos.x, pos.y, vel.x, vel.y, radius);
+	}
 }
