@@ -14,7 +14,11 @@ public class TestingStuffOut extends JPanel{
 
 	public static final int xMax = 400;
 	public static final int yMax = 400;
-	public static final double tolerance = 0.0000001;
+	public static final double tolerance = 0.00001;
+	
+	public final static Ball HorizontalWall = new Ball(-1, -1, 0, 0, 0);
+	public final static Ball VerticalWall = new Ball(-1, -1, 0, 0, 0);
+
 	
 	//TODO: Cleanup code
 	//TODO: Make time better
@@ -22,9 +26,9 @@ public class TestingStuffOut extends JPanel{
 	public static void main(String[] args) throws InterruptedException {
 	
 		
-		Ball one = new Ball(108.0,100.0,-2.0,1.0,8.0);
-		Ball two = new Ball(316.00,124,0.0,-2.0,8.0);
-
+		Ball one = new Ball(109.0,100.0,-20.0,10.0,10.0);
+		Ball two = new Ball(316.00,124,20.0,-20.0,10.0);
+		Ball three = new Ball(316.00,144,20.0,-20.0,80.0);
 		
 		
 		JFrame frame = new JFrame();
@@ -33,9 +37,10 @@ public class TestingStuffOut extends JPanel{
 		BallDisplay temp = new BallDisplay();
 		temp.add(one);
 		temp.setPreferredSize(new Dimension(xMax, yMax));
-		temp.add(two);
+		//temp.add(two);
+		//temp.add(three);
 		for(int i = 0; i < 300; i++){
-			temp.add(new Ball((Math.random() * 392) + 4, (Math.random() * 392) + 4, (Math.random() * 4) - 2, (Math.random() * 4) - 2, 4));
+			temp.add(new Ball((Math.random() * 392) + 4, (Math.random() * 392) + 4, (Math.random() * 8) - 4, (Math.random() * 8) - 4, 4));
 		}
 		frame.add(temp);
 		frame.pack();
@@ -45,10 +50,23 @@ public class TestingStuffOut extends JPanel{
 		TestingStuffOut temp2 = new TestingStuffOut();
 		BallSimulation sim = new BallSimulation(temp.getBalls());
 		
+		double total = 0;
 		for(int i = 0; ; i++){
-			temp2.update(sim, temp, 0.1);
+			long startTime = System.currentTimeMillis();
+			temp2.update(sim, temp, .3);
 			frame.repaint(); //Displays all balls
-			Thread.sleep(1); //TODO: replace with generating future collision.
+			//Thread.sleep(1); //TODO: replace with generating future collision.
+			
+			
+			while(sim.getAllCollisions().size() < max && (System.currentTimeMillis() - startTime) < 10){
+				sim.setNextCollisionPoint();
+			}
+			if(i == 0){
+				System.out.println(sim.getAllCollisions().size());
+			}
+			long sleep = System.currentTimeMillis() - startTime < 10? 10 - (System.currentTimeMillis() - startTime): 0;
+			Thread.sleep(sleep);
+			//System.out.println(sim.getAllCollisions().size());
 		}
 
 
@@ -57,29 +75,22 @@ public class TestingStuffOut extends JPanel{
 	}
 
 	double time = 0;
+	static double max = 1000;
+	double count = 0;
 	public void update(BallSimulation sim, BallDisplay temp, double dt){
 		ArrayList<Ball> balls = temp.getBalls();
 		ArrayList<Collision> collisions = sim.getAllCollisions();
 		while(collisions.size() == 0 || collisions.get(collisions.size() - 1).absoluteTime < time + dt){
 			sim.setNextCollisionPoint();
-
+			if(collisions.size() > max){
+				max++;
+			}
 		}
-		CollisionLogic.update(dt, balls, time, collisions);
+		//System.out.println(collisions);
+		count += CollisionLogic.update(dt, balls, time, collisions);
 		time += dt;
+		System.out.println(count);
 	}
-	
-	//TODO: Fix all of the adding balls to list problems
-	/*private void add(Ball one) {
-		balls.add(one);
-		collisions = new ArrayList<Collision>();
-		balls.forEach(ball -> futurePositions.add(ball.copy()));
-	}*/
-
-	/**
-	 * Called automatically in update if there are no more collision points, can be called manualy whenever, even in a 
-	 * different thread. If no collisions in the future then simply make a new collision object with t = double max value and 
-	 * two null balls.
-	 */
 	
 	
 

@@ -16,22 +16,23 @@ public class CollisionLogic {
 	 * @param currentTime
 	 * @param collisions Assumed that this contains all collisions until currentTime + dt
 	 */
-	public static void update(double dt, ArrayList<Ball> balls, double currentTime, ArrayList<Collision> collisions){
+	public static double update(double dt, ArrayList<Ball> balls, double currentTime, ArrayList<Collision> collisions){
 		double endTime = currentTime + dt;
-		
+		double count = 0;
 		while(collisions.size() != 0){
 			Collision next = collisions.get(0);
 
 			if(next.absoluteTime <= endTime){
 				moveAllBalls(next.absoluteTime - currentTime, balls);
 				currentTime = next.absoluteTime;
-				if(next.b2 != null){
+				if(next.b2 != TestingStuffOut.HorizontalWall && next.b2 != TestingStuffOut.VerticalWall){
 					collision(next.b1, next.b2);
 				}
 				else{
-					wallCollision(next.b1);
+					wallCollision(next.b1, next.b2);
 				}
 				collisions.remove(0);
+				count++;
 			}
 			else{
 				break;
@@ -42,11 +43,15 @@ public class CollisionLogic {
 		
 		//TODO: Make it not possible to mess this part up
 
+		return count;
 
 	}
 	
-	private static void wallCollision(Ball b1) {
-		if(equal(b1.getPos().x, b1.getRadius()) || equal(b1.getPos().x, TestingStuffOut.xMax - b1.getRadius())){
+	private static void wallCollision(Ball b1, Ball wall) {
+
+		//double minXDistance = TestingStuffOut.xMax - b1.getPos().x < b1.getPos().x? TestingStuffOut.xMax - b1.getPos().x : b1.getPos().x;
+		//double minYDistance = TestingStuffOut.yMax - b1.getPos().y < b1.getPos().y? TestingStuffOut.yMax - b1.getPos().y : b1.getPos().y;
+		if(wall == TestingStuffOut.HorizontalWall){
 			//negative here
 			b1.setVelocity(new PhysicalVector2D(b1.getVel().x * -1, b1.getVel().y));
 		}

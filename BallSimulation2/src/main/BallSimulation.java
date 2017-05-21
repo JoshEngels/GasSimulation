@@ -14,11 +14,14 @@ public class BallSimulation {
 	}
 	
 	
+	double count = 0;
 	public void setNextCollisionPoint(){
-		//TODO: USE FUTURE STATE OF BALLS
+		//count++;
+		//System.out.println(count);
 		Ball ball1 = null;
 		Ball ball2 = null;
 		double shortestTime = Double.MAX_VALUE;
+		boolean wallCollision = false;
 		for(Ball b1 : fakeBalls){
 			for(Ball b2 : fakeBalls){
 				if(b1 != b2){
@@ -27,25 +30,29 @@ public class BallSimulation {
 						shortestTime = time;
 						ball1 = b1;
 						ball2 = b2;
+						wallCollision = false;
 					}
 				}
 			}
 
-			double wallCollisionTime = getWallTime(b1);
+			
+			double xTime = getXWallTime(b1);
+			double yTime = getYWallTime(b1);
+			double wallCollisionTime =  xTime < yTime? xTime : yTime;
 			if(wallCollisionTime < shortestTime){			
 				shortestTime = wallCollisionTime;
 				ball1 = b1;
-				ball2 = null;
+				ball2 = wallCollisionTime == xTime? TestingStuffOut.HorizontalWall: TestingStuffOut.VerticalWall;
+				wallCollision = true;
 			}
 		}
-		collisions.add(new Collision(actualBalls.get(fakeBalls.indexOf(ball1)), ball2 == null? null: actualBalls.get(fakeBalls.indexOf(ball2)), 
+		collisions.add(new Collision(actualBalls.get(fakeBalls.indexOf(ball1)), wallCollision? ball2 : actualBalls.get(fakeBalls.indexOf(ball2)), 
 				shortestTime + simulationTime));
 		//Simulated collisions
 		CollisionLogic.update(fakeBalls, new Collision(ball1, ball2, shortestTime + simulationTime), simulationTime);
 
 		simulationTime += shortestTime;
 
-		//TODO: Add collisions with walls
 	}
 	
 	public ArrayList<Collision> getAllCollisions(){
@@ -72,7 +79,7 @@ public class BallSimulation {
 		return (-b + (positive? 1 : -1) * Math.sqrt(b * b - 4 * a * c)) / (2 * a);
 	}
 
-	private static double getWallTime(Ball b1) {
+	private static double getXWallTime(Ball b1){
 		PhysicalVector2D pos = b1.getPos();
 		PhysicalVector2D vel = b1.getVel();
 		double tx;
@@ -85,6 +92,12 @@ public class BallSimulation {
 		else{
 			tx = (TestingStuffOut.xMax - b1.getRadius() - pos.x) / vel.x;
 		}
+		return tx;
+	}
+	
+	private static double getYWallTime(Ball b1) {
+		PhysicalVector2D pos = b1.getPos();
+		PhysicalVector2D vel = b1.getVel();
 		double ty;
 		if(vel.y == 0){
 			ty = Double.POSITIVE_INFINITY;
@@ -95,9 +108,7 @@ public class BallSimulation {
 		else{
 			ty = (TestingStuffOut.yMax - b1.getRadius() - pos.y) / vel.y;
 		}
-		
-		
-		return tx < ty? tx : ty;
+		return ty;
 	}
 
 
