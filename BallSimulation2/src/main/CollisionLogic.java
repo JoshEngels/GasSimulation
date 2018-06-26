@@ -25,7 +25,7 @@ public class CollisionLogic {
 			if(next.absoluteTime <= endTime){
 				moveAllBalls(next.absoluteTime - currentTime, balls);
 				currentTime = next.absoluteTime;
-				if(next.b2 != TestingStuffOut.HorizontalWall && next.b2 != TestingStuffOut.VerticalWall){
+				if(next.b2 != Constants.HorizontalWall && next.b2 != Constants.VerticalWall){
 					collision(next.b1, next.b2);
 				}
 				else{
@@ -51,7 +51,7 @@ public class CollisionLogic {
 
 		//double minXDistance = TestingStuffOut.xMax - b1.getPos().x < b1.getPos().x? TestingStuffOut.xMax - b1.getPos().x : b1.getPos().x;
 		//double minYDistance = TestingStuffOut.yMax - b1.getPos().y < b1.getPos().y? TestingStuffOut.yMax - b1.getPos().y : b1.getPos().y;
-		if(wall == TestingStuffOut.HorizontalWall){
+		if(wall == Constants.HorizontalWall){
 			//negative here
 			b1.setVelocity(new PhysicalVector2D(b1.getVel().x * -1, b1.getVel().y));
 		}
@@ -59,12 +59,9 @@ public class CollisionLogic {
 			b1.setVelocity(new PhysicalVector2D(b1.getVel().x, b1.getVel().y * -1));
 		}
 	}
-	
-	public static boolean equal(double one, double two){
-		return Math.abs(one - two) < TestingStuffOut.tolerance;
-	}
 
-	private static void moveAllBalls(double dt, ArrayList<Ball> balls){
+
+	public static void moveAllBalls(double dt, ArrayList<Ball> balls){
 		for(Ball b : balls){
 			b.update(dt);
 		}

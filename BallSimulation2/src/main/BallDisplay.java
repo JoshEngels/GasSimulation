@@ -8,27 +8,21 @@ import javax.swing.JPanel;
 public class BallDisplay extends JPanel{
 
 
-	private ArrayList<Ball> balls = new ArrayList<Ball>();
-	public void setBalls(ArrayList<Ball> balls){
-		this.balls = balls;
+	private Image image;
+	public void setImage(Image balls){
+		this.image = balls;
 	}
 	
 	
 
 	@Override
 	public void paintComponent(Graphics g){
-		for(Ball b : balls){
-			g.drawOval((int)(b.getPos().x - b.getRadius()), (int)(b.getPos().y - b.getRadius()), 2 * (int)b.getRadius(), 2 * (int)b.getRadius());
+		double time = image.time;
+		for(DumbBall b : image.dumbBalls){
+			g.drawOval((int)(b.pos.x - b.radius), (int)(b.pos.y - b.radius), 2 * (int)b.radius, 2 * (int)b.radius);
 		}
+		g.drawString("Time: " + time, 5, 12);
 	}
 
 
-
-	public void add(Ball ball) {
-		balls.add(ball);
-	}
-	
-	public ArrayList<Ball> getBalls(){
-		return balls;
-	}
 }

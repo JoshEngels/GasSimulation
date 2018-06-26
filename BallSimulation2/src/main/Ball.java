@@ -3,15 +3,17 @@ import static main.PhysicalVector2D.*;
 
 public class Ball {
 
+	//Make this extend dumbBall?
 	private PhysicalVector2D vel;
 	private PhysicalVector2D pos;
 	private double radius;
+	private double time;
 	
 	public Ball(double xPos, double yPos, double xVel, double yVel, double radius) {
 		this.radius = radius;
 		vel = new PhysicalVector2D(xVel, yVel);
 		pos = new PhysicalVector2D(xPos, yPos);
-
+		time = 0;
 	}
 
 	public PhysicalVector2D getPos(){
@@ -26,8 +28,13 @@ public class Ball {
 		return radius;
 	}
 	
+	public double getTime() {
+		return time;
+	}
+	
 	public void update(double time){
 		pos = add(pos, multiply(vel, time));
+		this.time += time;
 	}
 	
 	public void setVelocity(PhysicalVector2D vel){

@@ -3,38 +3,47 @@ package main;
 import java.util.ArrayList;
 
 public class BallSimulation {
-	private ArrayList<Ball> actualBalls;
-	private ArrayList<Ball> fakeBalls = new ArrayList<Ball>();
-	private double simulationTime = 0;
+	private ArrayList<Ball> balls = new ArrayList<Ball>();
 	ArrayList<Collision> collisions = new ArrayList<Collision>();
 
 	BallSimulation(ArrayList<Ball> balls){
-		this.actualBalls = balls;
-		actualBalls.forEach(ball -> fakeBalls.add(ball.copy()));
+		this.balls = balls;
+	}
+	
+	double currentTime = 0;
+	
+	public Image getNextImage(double dt) {
+		double endTime = dt + currentTime;
+		if(dt < 0) {
+			throw new IllegalArgumentException("No going back. At least not yet");
+		}
+		
+		Collision c = getNextCollisionPoint();
+		while(c.absoluteTime < endTime) {
+			CollisionLogic.update(balls, c, currentTime);
+			currentTime = c.absoluteTime;
+			c = getNextCollisionPoint();
+		}
+		
+		CollisionLogic.moveAllBalls(endTime - currentTime, balls);
+		currentTime = endTime;
+		
+		ArrayList<DumbBall> imageSetup = new ArrayList<DumbBall>();
+		for(Ball b : balls) {
+			imageSetup.add(new DumbBall(b.getPos(), b.getRadius()));
+		}
+		
+		return new Image(imageSetup, endTime);
 	}
 	
 	
 	double count = 0;
-	public void setNextCollisionPoint(){
-		//count++;
-		//System.out.println(count);
+	private Collision getNextCollisionPoint(){
+
 		Ball ball1 = null;
 		Ball ball2 = null;
 		double shortestTime = Double.MAX_VALUE;
-		boolean wallCollision = false;
-		for(Ball b1 : fakeBalls){
-			for(Ball b2 : fakeBalls){
-				if(b1 != b2){
-					double time = getMinCollisionTime(b1, b2);
-					if(time < shortestTime && time > 0){
-						shortestTime = time;
-						ball1 = b1;
-						ball2 = b2;
-						wallCollision = false;
-					}
-				}
-			}
-
+		for(Ball b1 : balls){
 			
 			double xTime = getXWallTime(b1);
 			double yTime = getYWallTime(b1);
@@ -42,24 +51,26 @@ public class BallSimulation {
 			if(wallCollisionTime < shortestTime){			
 				shortestTime = wallCollisionTime;
 				ball1 = b1;
-				ball2 = wallCollisionTime == xTime? TestingStuffOut.HorizontalWall: TestingStuffOut.VerticalWall;
-				wallCollision = true;
+				ball2 = wallCollisionTime == xTime? Constants.HorizontalWall: Constants.VerticalWall;
+			}
+			
+			for(Ball b2 : balls){
+				if(b1 != b2){
+					double time = getMinCollisionTime(b1, b2);
+					if(time < shortestTime && time > 0){
+						shortestTime = time;
+						ball1 = b1;
+						ball2 = b2;
+					}
+				}
 			}
 		}
-		collisions.add(new Collision(actualBalls.get(fakeBalls.indexOf(ball1)), wallCollision? ball2 : actualBalls.get(fakeBalls.indexOf(ball2)), 
-				shortestTime + simulationTime));
-		//Simulated collisions
-		CollisionLogic.update(fakeBalls, new Collision(ball1, ball2, shortestTime + simulationTime), simulationTime);
-
-		simulationTime += shortestTime;
-
+				
+		return new Collision(ball1, ball2, currentTime + shortestTime);
 	}
 	
-	public ArrayList<Collision> getAllCollisions(){
-		return collisions; //TODO: Fix permission issues
-	}
 	
-	public static double getMinCollisionTime(Ball one, Ball two){
+	private static double getMinCollisionTime(Ball one, Ball two){
 
 		double j = one.getVel().x - two.getVel().x;
 		double k = one.getPos().x - two.getPos().x;
@@ -75,7 +86,7 @@ public class BallSimulation {
 		return posibilityOne < posibilityTwo? posibilityOne : posibilityTwo;
 	}
 	
-	public static double quadratic(double a, double b, double c, boolean positive){
+	private static double quadratic(double a, double b, double c, boolean positive){
 		return (-b + (positive? 1 : -1) * Math.sqrt(b * b - 4 * a * c)) / (2 * a);
 	}
 
@@ -90,7 +101,7 @@ public class BallSimulation {
 			tx = (pos.x - b1.getRadius()) / -vel.x;
 		}
 		else{
-			tx = (TestingStuffOut.xMax - b1.getRadius() - pos.x) / vel.x;
+			tx = (Constants.xMax - b1.getRadius() - pos.x) / vel.x;
 		}
 		return tx;
 	}
@@ -106,7 +117,7 @@ public class BallSimulation {
 			ty = (pos.y - b1.getRadius()) / -vel.y;
 		}
 		else{
-			ty = (TestingStuffOut.yMax - b1.getRadius() - pos.y) / vel.y;
+			ty = (Constants.yMax - b1.getRadius() - pos.y) / vel.y;
 		}
 		return ty;
 	}

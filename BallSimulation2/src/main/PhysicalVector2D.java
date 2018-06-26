@@ -1,10 +1,15 @@
 package main;
 
+/**
+ * Immutable
+ * @author Josh
+ *
+ */
 public class PhysicalVector2D {
 
 	
-	public double x;
-	public double y;
+	public final double x;
+	public final double y;
 	
 	public PhysicalVector2D(double x, double y){
 		this.x = x;
