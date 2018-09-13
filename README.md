@@ -1,2 +1,2 @@
 # BallSimulation2
-New Physics With Hopefully Perfect Collisions
+A two dimensional simulator for a large number of balls undergoing elastic collisions with each other and the walls.
