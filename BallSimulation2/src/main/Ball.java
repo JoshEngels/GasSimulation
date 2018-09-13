@@ -8,6 +8,10 @@ public class Ball {
 	private PhysicalVector2D pos;
 	private double radius;
 	private double time;
+	public final int red = (int)(Math.random() * 256);
+	public final int green = (int)(Math.random() * 256);
+	public final int blue = (int)(Math.random() * 256);
+
 	
 	public Ball(double xPos, double yPos, double xVel, double yVel, double radius) {
 		this.radius = radius;
@@ -19,7 +23,7 @@ public class Ball {
 	public PhysicalVector2D getPos(){
 		return pos;
 	}
-	
+
 	public PhysicalVector2D getVel(){
 		return vel;
 	}
@@ -27,21 +31,33 @@ public class Ball {
 	public double getRadius() {
 		return radius;
 	}
-	
+
 	public double getTime() {
 		return time;
 	}
-	
+
 	public void update(double time){
 		pos = add(pos, multiply(vel, time));
 		this.time += time;
 	}
-	
+
 	public void setVelocity(PhysicalVector2D vel){
 		this.vel = vel;
 	}
-	
+
 	public Ball copy(){
 		return new Ball(pos.x, pos.y, vel.x, vel.y, radius);
 	}
+
+	public String toString() {
+		return "Pos: " + pos.x + " , " + pos.y + ", Vel: " + vel.x + " , " + vel.y;
+	}
+
+	public boolean intersects(Ball b) {
+		return PhysicalVector2D.sub(b.pos, pos).magnitude() < b.radius + radius;
+	}
+	
+	
+
+
 }

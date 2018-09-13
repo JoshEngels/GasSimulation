@@ -3,8 +3,8 @@ package main;
 public class Constants {
 
 	
-	public static final int xMax = 400;
-	public static final int yMax = 400;
+	public static final int xMax = 1200;
+	public static final int yMax = 600;
 
 	public final static Ball HorizontalWall = new Ball(-1, -1, 0, 0, 0);
 	public final static Ball VerticalWall = new Ball(-1, -1, 0, 0, 0);
