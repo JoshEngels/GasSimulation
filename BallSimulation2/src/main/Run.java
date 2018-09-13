@@ -6,18 +6,19 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+//if size less than two just display two
+
 public class Run extends JPanel{
 
-	//TODO: Turn into applet
+	public static long originalStart = 0;
 	public static void main(String[] args) throws InterruptedException {
 
-		//TODO max radius
 		System.out.println("start");
 		ArrayList<Ball> temp = new ArrayList<Ball>();
 
 		outer:
-		for(int i = 0; i < 1001; i++){
-			Ball b = new Ball((Math.random() * 1150) + 11, (Math.random() * 550) + 11, 300 * (Math.random() - 0.5),  300 * (Math.random() - 0.5), 3 + (int) (7 * Math.random()));
+		for(int i = 0; i < 500; i++){
+			Ball b = new Ball((Math.random() * 1150) + 11, (Math.random() * 550) + 11, 300 * (Math.random() - 0.5),  300 * (Math.random() - 0.5), 3 + (int)(7 * Math.random()));
 			for(Ball c : temp) {
 				if(c.intersects(b)) {
 					i--;
@@ -37,26 +38,30 @@ public class Run extends JPanel{
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(display);
-		frame.setPreferredSize(new Dimension(500, 500));
+		frame.setPreferredSize(new Dimension(Constants.xMax + 15, Constants.yMax + 40));
 		frame.pack();
 
 		
-		long originalStart = System.currentTimeMillis();
-		int frameCount = 0;
+		originalStart = System.currentTimeMillis();
+		long simulationTime = System.currentTimeMillis();
+		//int frameCount = 0;
 		while(true) {
-			frameCount++;
+			//frameCount++;
 	
 		
 
-			//System.out.println(simulator.nextBall);
 			
-			long startTime = System.currentTimeMillis();
 			display.setImage(simulator.getNextImage(Constants.millasecondsPerFrame / 1000.0));
 			frame.repaint();
-			long elapsedTime = System.currentTimeMillis() - startTime;
-			if(elapsedTime < Constants.millasecondsPerFrame) {
-				Thread.sleep(Constants.millasecondsPerFrame - elapsedTime);
+			
+			simulationTime += Constants.millasecondsPerFrame;
+
+			//System.out.println((simulationTime - originalStart)+ " " + (System.currentTimeMillis() - originalStart));
+			//System.out.println(elapsedTime);
+			if((simulationTime - originalStart) > (System.currentTimeMillis() - originalStart)) {
+				Thread.sleep((simulationTime - originalStart) - (System.currentTimeMillis() - originalStart));
 			}
+			//System.out.println(System.currentTimeMillis() - originalStart);
 			//System.out.println(1000 * frameCount / (double)(System.currentTimeMillis() - originalStart)  + " " + 1000 * simulator.iterator / (double)(System.currentTimeMillis() - originalStart));
 		}
 

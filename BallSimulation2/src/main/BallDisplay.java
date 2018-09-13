@@ -23,7 +23,13 @@ public class BallDisplay extends JPanel{
 			g.setColor(new Color(b.red, b.green, b.blue));
 			g.fillOval((int)(b.pos.x - b.radius), (int)(b.pos.y - b.radius), 2 * (int)b.radius, 2 * (int)b.radius);
 		}
-		g.drawString("Time: " + time, 5, 12);
+		g.setColor(Color.BLACK);
+		double simulationTime = (int)(time * 1000) / 1000.0;
+		double actualTime = (System.currentTimeMillis() - Run.originalStart) / 1000.0; 
+		g.drawString("Simulation Time: " + actualTime + " Seconds", 5, 12);
+		g.drawString("Actual Time: " + simulationTime + " Seconds", 5, 27);
+		g.drawString("Slow Down Factor: " + Math.round(((actualTime / simulationTime) * 1000)) / 1000.0, 5, 42);
+
 	}
 
 

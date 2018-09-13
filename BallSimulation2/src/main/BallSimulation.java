@@ -36,7 +36,6 @@ public class BallSimulation {
 
 			currentTime = minCollisionTime + currentTime;
 			minCollisionTime = Double.MAX_VALUE;
-			second = false;
 			nextCollisionUpdate(last.b1);
 
 			if(last.b2 != Constants.HorizontalWall && last.b2 != Constants.VerticalWall) {
@@ -60,7 +59,6 @@ public class BallSimulation {
 
 		return new Image(imageSetup, endTime);
 	}
-	boolean second = false;
 
 	private void setupFirstCollision() {
 
@@ -138,39 +136,6 @@ public class BallSimulation {
 		}
 
 	}
-
-	double count = 0;
-	private Collision getNextCollisionPoint(){
-
-		Ball ball1 = null;
-		Ball ball2 = null;
-		double shortestTime = Double.MAX_VALUE;
-		for(Ball b1 : balls){
-
-			double xTime = getXWallTime(b1);
-			double yTime = getYWallTime(b1);
-			double wallCollisionTime =  xTime < yTime? xTime : yTime;
-			if(wallCollisionTime < shortestTime){			
-				shortestTime = wallCollisionTime;
-				ball1 = b1;
-				ball2 = wallCollisionTime == xTime? Constants.HorizontalWall: Constants.VerticalWall;
-			}
-
-			for(Ball b2 : balls){
-				if(b1 != b2){
-					double time = getMinCollisionTime(b1, b2);
-					if(time < shortestTime && time > 0){
-						shortestTime = time;
-						ball1 = b1;
-						ball2 = b2;
-					}
-				}
-			}
-		}
-
-		return new Collision(ball1, ball2, currentTime + shortestTime);
-	}
-
 
 	private static double getMinCollisionTime(Ball one, Ball two){
 

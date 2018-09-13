@@ -9,6 +9,6 @@ public class Constants {
 	public final static Ball HorizontalWall = new Ball(-1, -1, 0, 0, 0);
 	public final static Ball VerticalWall = new Ball(-1, -1, 0, 0, 0);
 	
-	public final static int frameRate = 60;
+	public final static int frameRate = 1000;
 	public final static int millasecondsPerFrame = 1000 / frameRate;
 }
