@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.Color;
+
 /**
  * Enough to display and thats it
  * Immutable
@@ -8,16 +10,12 @@ package main;
  */
 public class DumbBall {
 
-	public final int red;
-	public final int green;
-	public final int blue;
+	public final Color color;
 	public final PhysicalVector2D pos;
 	public final double radius;
-	DumbBall(PhysicalVector2D pos, double radius, int red, int green, int blue){
+	DumbBall(PhysicalVector2D pos, double radius, Color color){
 		this.pos = pos;
 		this.radius = radius;
-		this.blue = blue;
-		this.red = red;
-		this.green = green;
+		this.color = color;
 	}
 }

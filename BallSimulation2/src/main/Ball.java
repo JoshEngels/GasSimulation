@@ -1,6 +1,8 @@
 package main;
 import static main.PhysicalVector2D.*;
 
+import java.awt.Color;
+
 public class Ball {
 
 	//Make this extend dumbBall?
@@ -8,10 +10,10 @@ public class Ball {
 	private PhysicalVector2D pos;
 	private double radius;
 	private double time;
-	public final int red = (int)(Math.random() * 256);
-	public final int green = (int)(Math.random() * 256);
-	public final int blue = (int)(Math.random() * 256);
-
+	private final int red = (int)(Math.random() * 256);
+	private final int green = (int)(Math.random() * 256);
+	private final int blue = (int)(Math.random() * 256);
+	public Color color = new Color(red, green, blue);
 	
 	public Ball(double xPos, double yPos, double xVel, double yVel, double radius) {
 		this.radius = radius;
@@ -37,7 +39,7 @@ public class Ball {
 	}
 
 	public void update(double time){
-		pos = add(pos, multiply(vel, time));
+		pos = add(pos, scale(vel, time));
 		this.time += time;
 	}
 

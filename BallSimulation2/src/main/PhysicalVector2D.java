@@ -28,13 +28,14 @@ public class PhysicalVector2D {
 		return new PhysicalVector2D(one.x - two.x, one.y - two.y);
 	}
 	
-	public static PhysicalVector2D multiply(PhysicalVector2D one, double scalar){
+	public static PhysicalVector2D scale(PhysicalVector2D one, double scalar){
 		return new PhysicalVector2D(one.x * scalar, one.y * scalar);
 	}
 
 	public static double dot(PhysicalVector2D one, PhysicalVector2D two){
 		return one.x * two.x + one.y * two.y;
 	}
+	
 	
 	
 }

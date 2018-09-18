@@ -13,15 +13,22 @@ public class BallDisplay extends JPanel{
 	public void setImage(Image balls){
 		this.image = balls;
 	}
-	
-	
+
+
 
 	@Override
 	public void paintComponent(Graphics g){
 		double time = image.time;
 		for(DumbBall b : image.dumbBalls){
-			g.setColor(new Color(b.red, b.green, b.blue));
-			g.fillOval((int)(b.pos.x - b.radius), (int)(b.pos.y - b.radius), 2 * (int)b.radius, 2 * (int)b.radius);
+			g.setColor(b.color);
+			if(!Constants.PLAY_COLOR_WAR) {
+				g.setColor(Color.BLACK);
+				g.drawOval((int)(b.pos.x - b.radius), (int)(b.pos.y - b.radius), 2 * (int)b.radius, 2 * (int)b.radius);
+
+			}
+			else {
+				g.fillOval((int)(b.pos.x - b.radius), (int)(b.pos.y - b.radius), 2 * (int)b.radius, 2 * (int)b.radius);
+			}
 		}
 		g.setColor(Color.BLACK);
 		double simulationTime = (int)(time * 1000) / 1000.0;

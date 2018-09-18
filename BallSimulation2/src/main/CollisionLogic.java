@@ -1,7 +1,7 @@
 package main;
 
 import static main.PhysicalVector2D.dot;
-import static main.PhysicalVector2D.multiply;
+import static main.PhysicalVector2D.scale;
 import static main.PhysicalVector2D.sub;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class CollisionLogic {
 			if(next.absoluteTime <= endTime){
 				moveAllBalls(next.absoluteTime - currentTime, balls);
 				currentTime = next.absoluteTime;
-				if(next.b2 != Constants.HorizontalWall && next.b2 != Constants.VerticalWall){
+				if(next.b2 != Constants.HORIZONTAL_WALL && next.b2 != Constants.VERTICAL_WALL){
 					collision(next.b1, next.b2);
 				}
 				else{
@@ -40,18 +40,13 @@ public class CollisionLogic {
 		}
 
 		moveAllBalls(endTime - currentTime, balls);
-		
-		//TODO: Make it not possible to mess this part up
-
 		return count;
 
 	}
 	
 	private static void wallCollision(Ball b1, Ball wall) {
 
-		//double minXDistance = TestingStuffOut.xMax - b1.getPos().x < b1.getPos().x? TestingStuffOut.xMax - b1.getPos().x : b1.getPos().x;
-		//double minYDistance = TestingStuffOut.yMax - b1.getPos().y < b1.getPos().y? TestingStuffOut.yMax - b1.getPos().y : b1.getPos().y;
-		if(wall == Constants.HorizontalWall){
+		if(wall == Constants.HORIZONTAL_WALL){
 			//negative here
 			b1.setVelocity(new PhysicalVector2D(b1.getVel().x * -1, b1.getVel().y));
 		}
@@ -68,16 +63,19 @@ public class CollisionLogic {
 	}
 
 	public static void collision(Ball one, Ball two){
-		assert(/*distance = 0*/ true);
 		PhysicalVector2D negChange1 = calculateUnweightedChange(sub(one.getPos(), two.getPos()), sub(one.getVel(), two.getVel()));
 		PhysicalVector2D negChange2 = calculateUnweightedChange(sub(two.getPos(), one.getPos()), sub(two.getVel(), one.getVel()));
-		one.setVelocity(sub(one.getVel(), negChange1));
-		two.setVelocity(sub(two.getVel(), negChange2));
+		
+		double mass1 = Math.pow(one.getRadius(), Constants.AREA_MASS_DEPENDENCE);
+		double mass2 = Math.pow(two.getRadius(), Constants.AREA_MASS_DEPENDENCE);
+
+		one.setVelocity(sub(one.getVel(),  scale(negChange1, 2 * mass2 / (mass1 + mass2))));
+		two.setVelocity(sub(two.getVel(),  scale(negChange2, 2 * mass1 / (mass1 + mass2))));
 	}
 
 	public static PhysicalVector2D calculateUnweightedChange(PhysicalVector2D posChange, PhysicalVector2D velChange){
 		//see https://en.wikipedia.org/wiki/Elastic_collision
-		return multiply(posChange, dot(velChange, posChange) / Math.pow(posChange.magnitude(),2));
+		return scale(posChange, dot(velChange, posChange) / Math.pow(posChange.magnitude(),2));
 	}
 
 	public static void update(ArrayList<Ball> balls, Collision collision, double currentTime){

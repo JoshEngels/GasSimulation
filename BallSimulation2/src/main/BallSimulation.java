@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -29,32 +30,37 @@ public class BallSimulation {
 
 		while(minCollisionTime + currentTime < endTime) {
 			Collision last = nextCollisions.get(nextBall);
-		
+
 			CollisionLogic.update(balls, last, currentTime);
 			iterator++;
 
+			if(last.b2 != Constants.HORIZONTAL_WALL && last.b2 != Constants.VERTICAL_WALL) {
+				Color newColor = Math.random() > 0.5? last.b1.color: last.b2.color;
+				last.b1.color = newColor;
+				last.b2.color = newColor;
+			}
 
 			currentTime = minCollisionTime + currentTime;
 			minCollisionTime = Double.MAX_VALUE;
 			nextCollisionUpdate(last.b1);
 
-			if(last.b2 != Constants.HorizontalWall && last.b2 != Constants.VerticalWall) {
+			if(last.b2 != Constants.HORIZONTAL_WALL && last.b2 != Constants.VERTICAL_WALL) {
 				nextCollisionUpdate(last.b2);
 			}
 
-			if(minCollisionTime < 0) System.out.println("uh oh");
+			//if(minCollisionTime < 0) System.out.println("uh oh");
 
 
 		}
 
-	
+
 		CollisionLogic.moveAllBalls(endTime - currentTime, balls);
 		minCollisionTime -= endTime - currentTime;
 		currentTime = endTime;
 
 		ArrayList<DumbBall> imageSetup = new ArrayList<DumbBall>();
 		for(Ball b : balls) {
-			imageSetup.add(new DumbBall(b.getPos(), b.getRadius(), b.red, b.green, b.blue));
+			imageSetup.add(new DumbBall(b.getPos(), b.getRadius(), b.color));
 		}
 
 		return new Image(imageSetup, endTime);
@@ -85,9 +91,9 @@ public class BallSimulation {
 		double xTime = getXWallTime(b1);
 		double yTime = getYWallTime(b1);
 		double wallCollisionTime =  xTime < yTime? xTime : yTime;
-		if(wallCollisionTime < shortestTime){			
+		if(wallCollisionTime < shortestTime && wallCollisionTime > 0){		
 			shortestTime = wallCollisionTime;
-			b2 = wallCollisionTime == xTime? Constants.HorizontalWall: Constants.VerticalWall;
+			b2 = wallCollisionTime == xTime? Constants.HORIZONTAL_WALL: Constants.VERTICAL_WALL;
 		}
 
 		for(Ball test : balls){
@@ -106,7 +112,7 @@ public class BallSimulation {
 	}
 
 	private void nextCollisionUpdate(Ball lastCollision1) {
-		
+
 		Collision temp = getNextCollisionWithBall(lastCollision1);
 		nextCollisions.put(lastCollision1, temp);
 
@@ -126,7 +132,7 @@ public class BallSimulation {
 			}
 
 		}
-		
+
 		minCollisionTime = Double.MAX_VALUE;
 		for(Entry<Ball, Collision> entry : nextCollisions.entrySet()) {
 			if(entry.getValue().absoluteTime - currentTime < minCollisionTime) {
@@ -168,7 +174,7 @@ public class BallSimulation {
 			tx = (pos.x - b1.getRadius()) / -vel.x;
 		}
 		else{
-			tx = (Constants.xMax - b1.getRadius() - pos.x) / vel.x;
+			tx = (Constants.X_MAX - b1.getRadius() - pos.x) / vel.x;
 		}
 		return tx;
 	}
@@ -184,7 +190,7 @@ public class BallSimulation {
 			ty = (pos.y - b1.getRadius()) / -vel.y;
 		}
 		else{
-			ty = (Constants.yMax - b1.getRadius() - pos.y) / vel.y;
+			ty = (Constants.Y_MAX_SIM - b1.getRadius() - pos.y) / vel.y;
 		}
 		return ty;
 	}
