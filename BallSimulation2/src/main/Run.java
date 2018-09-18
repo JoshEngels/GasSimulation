@@ -20,7 +20,7 @@ public class Run extends JPanel{
 		int count = 0;
 		outer:
 			for(int i = 0; i < Constants.NUM_RANDOM_BALLS; i++){
-				System.out.println(++count);
+				//System.out.println(++count);
 				
 				Ball b = new Ball(Constants.MAX_RADIUS + Math.random() * (Constants.X_MAX - Constants.MAX_RADIUS * 2), 
 						Constants.MAX_RADIUS  + Math.random() * (Constants.Y_MAX_SIM - Constants.MAX_RADIUS * 2),
@@ -84,6 +84,7 @@ public class Run extends JPanel{
 			if((simulationTime - originalStart) > elapsedRealTime) {
 				Thread.sleep((simulationTime - originalStart) - elapsedRealTime);
 			}
+			
 		}
 
 

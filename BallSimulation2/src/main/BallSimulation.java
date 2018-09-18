@@ -20,7 +20,7 @@ public class BallSimulation {
 
 	double currentTime = 0;
 
-	public int iterator = 0; 
+	public static long iterator = 0; 
 	public Image getNextImage(double dt) {
 
 		double endTime = dt + currentTime;

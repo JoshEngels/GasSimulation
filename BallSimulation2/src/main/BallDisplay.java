@@ -36,6 +36,8 @@ public class BallDisplay extends JPanel{
 		g.drawString("Simulation Time: " + actualTime + " Seconds", 5, 12);
 		g.drawString("Actual Time: " + simulationTime + " Seconds", 5, 27);
 		g.drawString("Slow Down Factor: " + Math.round(((actualTime / simulationTime) * 1000)) / 1000.0, 5, 42);
+		g.drawString("Collisions Per Second: " + BallSimulation.iterator * 1000 / (System.currentTimeMillis() - Run.originalStart), 5, 57);
+
 
 	}
 
