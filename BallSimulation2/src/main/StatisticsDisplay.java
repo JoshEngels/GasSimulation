@@ -48,7 +48,7 @@ public class StatisticsDisplay extends JPanel{
 		}
 		
 		//100 by 100
-		int windowWidth = Constants.X_MAX;
+		int windowWidth = Constants.X_MAX.intValue();
 		int windowHeight = Constants.Y_MAX_GRAPH;
 		for(Entry<Color, ArrayList<Integer>> singleHistory : history.entrySet()) {
 			g.setColor(singleHistory.getKey());

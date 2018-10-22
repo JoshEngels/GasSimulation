@@ -174,7 +174,7 @@ public class BallSimulation {
 			tx = (pos.x - b1.getRadius()) / -vel.x;
 		}
 		else{
-			tx = (Constants.X_MAX - b1.getRadius() - pos.x) / vel.x;
+			tx = (Constants.X_MAX.intValue() - b1.getRadius() - pos.x) / vel.x;
 		}
 		return tx;
 	}
@@ -190,7 +190,7 @@ public class BallSimulation {
 			ty = (pos.y - b1.getRadius()) / -vel.y;
 		}
 		else{
-			ty = (Constants.Y_MAX_SIM - b1.getRadius() - pos.y) / vel.y;
+			ty = (Constants.Y_MAX_SIM.intValue() - b1.getRadius() - pos.y) / vel.y;
 		}
 		return ty;
 	}
