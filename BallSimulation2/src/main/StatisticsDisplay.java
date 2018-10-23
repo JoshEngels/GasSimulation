@@ -21,6 +21,8 @@ public class StatisticsDisplay extends JPanel{
 	@Override
 	public void paintComponent(Graphics g){
 		
+		
+		
 		int maxEntries = 0;
 		
 		HashMap<Color, Integer> counts = new HashMap<Color, Integer>();
@@ -47,7 +49,6 @@ public class StatisticsDisplay extends JPanel{
 			}
 		}
 		
-		//100 by 100
 		int windowWidth = Constants.X_MAX.intValue();
 		int windowHeight = Constants.Y_MAX_GRAPH;
 		for(Entry<Color, ArrayList<Integer>> singleHistory : history.entrySet()) {
@@ -59,6 +60,16 @@ public class StatisticsDisplay extends JPanel{
 						windowHeight - singleHistory.getValue().get(i + 1) * windowHeight / numBalls);
 			}
 		}
+		
+		double time = image.time;
+		g.setColor(Color.BLACK);
+		double simulationTime = (int)(time * 1000) / 1000.0;
+		double actualTime = (System.currentTimeMillis() - Run.originalStart) / 1000.0; 
+		g.drawString("Simulation Time: " + actualTime + " Seconds", 5, 12);
+		g.drawString("Actual Time: " + simulationTime + " Seconds", 5, 27);
+		g.drawString("Slow Down Factor: " + Math.round(((actualTime / simulationTime) * 1000)) / 1000.0, 5, 42);
+		g.drawString("Collisions Per Second: " + BallSimulation.iterator * 1000 / (System.currentTimeMillis() - Run.originalStart), 5, 57);
+
 		
 	}
 }

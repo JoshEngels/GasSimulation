@@ -24,22 +24,25 @@ public class ButtonDisplay extends JPanel implements ActionListener{
 		setLayout(new GridLayout(0,4));
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		numberField = new JTextField(5);
+		numberField = new JTextField();
 		JLabel numberName = new JLabel("New Number of Balls:");
 		numberName.setLabelFor(numberField);
+		numberField.addActionListener(this);
 		add(numberName);
 		add(numberField);
 
 
-		xField = new JTextField(5);
+		xField = new JTextField();
 		JLabel xName = new JLabel("New X Dimension:");
 		xName.setLabelFor(xField);
+		xField.addActionListener(this);
 		add(xName);
 		add(xField);
 
-		yField = new JTextField(5);
+		yField = new JTextField();
 		JLabel yName = new JLabel("New Y Dimension:");
 		yName.setLabelFor(yField);
+		yField.addActionListener(this);
 		add(yName);
 		add(yField);
 
@@ -55,6 +58,7 @@ public class ButtonDisplay extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		//This is ok because all done after the window renders. Will end up killing own thread after boolean set, but thats ok
 		String newNum = numberField.getText();
 		String newX = xField.getText();
@@ -69,12 +73,15 @@ public class ButtonDisplay extends JPanel implements ActionListener{
 		try {
 			int x = Integer.parseInt(newX);
 			if(x > 0 && x < Toolkit.getDefaultToolkit().getScreenSize().width) {
-				
+				Constants.X_MAX.set(x);
 			}
 		}
 		catch(Exception er){}
 		try {
 			int y = Integer.parseInt(newY);
+			if(y > 0 && y < Toolkit.getDefaultToolkit().getScreenSize().height - Constants.Y_MAX_GRAPH) {
+				Constants.Y_MAX_SIM.set(y); //these do not actually have to be atomic. Only the boolean
+			}
 		}
 		catch(Exception er){}
 		

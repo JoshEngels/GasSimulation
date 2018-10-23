@@ -10,7 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 //if size less than two just display two
-
+//TODO: Advanced changes to simulation
+//TODO: Fix jump in collisions at beginning
+//TODO: Add replay feature --> see if actually reproducible
 public class Run extends JPanel{
 
 	public static long originalStart = 0;
@@ -21,18 +23,34 @@ public class Run extends JPanel{
 
 			ArrayList<Ball> temp = new ArrayList<Ball>();
 
+			long startTime = System.currentTimeMillis();
+			
+			//change to while
 			outer:
-				for(int i = 0; i < Constants.NUM_BALLS.intValue(); i++){
+				while(temp.size() < Constants.NUM_BALLS.intValue()){
 
-					Ball b = new Ball(Constants.MAX_RADIUS + Math.random() * (Constants.X_MAX.intValue() - Constants.MAX_RADIUS * 2), 
-							Constants.MAX_RADIUS  + Math.random() * (Constants.Y_MAX_SIM.intValue() - Constants.MAX_RADIUS * 2),
+					if(System.currentTimeMillis() - startTime > 1000) {
+						System.out.println("Only could produce " + temp.size() + " balls" );
+						System.out.println(temp.size());
+						break;
+					}
+					
+					Ball b = new Ball(Math.random() * Constants.X_MAX.intValue(), 
+							Math.random() * Constants.Y_MAX_SIM.intValue(),
 							Constants.MAX_VELOCITY * (Math.random() - 0.5),
 							Constants.MAX_VELOCITY * (Math.random() - 0.5), 
 							Constants.MIN_RADIUS + (int)((Constants.MAX_RADIUS - Constants.MIN_RADIUS) * Math.random()));
 
+					//replace with method in simulation
+					if(b.getRadius() > b.getPos().x || b.getRadius() + b.getPos().x > Constants.X_MAX.intValue()) {
+						continue;
+					}
+					if(b.getRadius() > b.getPos().y || b.getRadius() + b.getPos().y > Constants.Y_MAX_SIM.intValue()) {
+						continue;
+					}
+					
 					for(Ball c : temp) {
 						if(c.intersects(b)) {
-							i--;
 							continue outer;
 						}
 					}
@@ -52,7 +70,7 @@ public class Run extends JPanel{
 			display2.setPreferredSize(new Dimension(Constants.X_MAX.intValue(), Constants.Y_MAX_GRAPH));
 
 			JPanel display3 = new ButtonDisplay();
-			//display3.setPreferredSize(new Dimension(Constants.X_MAX, Constants.Y_MAX_GRAPH));
+			display3.setPreferredSize(new Dimension(Constants.X_MAX.intValue(), Constants.Y_MAX_GRAPH / 4));
 
 			JPanel mainPanel = new JPanel();
 			mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -70,6 +88,7 @@ public class Run extends JPanel{
 			ballFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			ballFrame.setVisible(true);
 			ballFrame.pack();
+			ballFrame.setResizable(false);
 			//ballFrame.setLocation(100, 100);
 
 			originalStart = System.currentTimeMillis();
