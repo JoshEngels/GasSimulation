@@ -3,11 +3,16 @@ package main;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import display.BallDisplay;
+import display.ButtonDisplay;
+import display.StatisticsDisplay;
 
 //if size less than two just display two
 //TODO: Advanced changes to simulation
@@ -25,7 +30,8 @@ public class Run extends JPanel{
 
 			long startTime = System.currentTimeMillis();
 			
-			//change to while
+
+			
 			outer:
 				while(temp.size() < Constants.NUM_BALLS.intValue()){
 

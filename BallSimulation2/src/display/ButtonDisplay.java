@@ -1,4 +1,4 @@
-package main;
+package display;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import main.Constants;
+
 public class ButtonDisplay extends JPanel implements ActionListener{
 
 	private JTextField numberField;
@@ -19,7 +21,7 @@ public class ButtonDisplay extends JPanel implements ActionListener{
 	private JTextField yField;
 	//private JButton reset;
 
-	ButtonDisplay(){
+	public ButtonDisplay(){
 		super();
 		setLayout(new GridLayout(0,4));
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

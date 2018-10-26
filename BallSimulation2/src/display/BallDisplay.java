@@ -1,4 +1,4 @@
-package main;
+package display;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -6,6 +6,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
+
+import main.Constants;
+import main.DumbBall;
+import main.Image;
 
 public class BallDisplay extends JPanel{
     private BufferedImage paintImage = new BufferedImage(Constants.X_MAX.intValue(), Constants.Y_MAX_GRAPH, BufferedImage.TYPE_3BYTE_BGR);

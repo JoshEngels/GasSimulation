@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+//TODO: Totally fix organization
 public class BallSimulation {
 	private ArrayList<Ball> balls = new ArrayList<Ball>();
 	ArrayList<Collision> collisions = new ArrayList<Collision>();
@@ -14,6 +15,7 @@ public class BallSimulation {
 	double minCollisionTime = Double.MAX_VALUE;
 
 	BallSimulation(ArrayList<Ball> balls){
+		iterator = 0;
 		this.balls = balls;
 		setupFirstCollision();
 	}
@@ -22,7 +24,6 @@ public class BallSimulation {
 
 	public static long iterator = 0; 
 	public Image getNextImage(double dt) {
-
 		double endTime = dt + currentTime;
 		if(dt < 0) {
 			throw new IllegalArgumentException("No going back. At least not yet");
@@ -33,7 +34,7 @@ public class BallSimulation {
 
 			CollisionLogic.update(balls, last, currentTime);
 			iterator++;
-
+			
 			if(last.b2 != Constants.HORIZONTAL_WALL && last.b2 != Constants.VERTICAL_WALL) {
 				Color newColor = Math.random() > 0.5? last.b1.color: last.b2.color;
 				last.b1.color = newColor;

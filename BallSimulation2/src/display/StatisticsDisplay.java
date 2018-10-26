@@ -1,4 +1,4 @@
-package main;
+package display;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -7,6 +7,12 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import javax.swing.JPanel;
+
+import main.BallSimulation;
+import main.Constants;
+import main.DumbBall;
+import main.Image;
+import main.Run;
 
 public class StatisticsDisplay extends JPanel{
 

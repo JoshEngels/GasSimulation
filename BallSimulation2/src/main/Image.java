@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Image {
 
-	ArrayList<DumbBall> dumbBalls = new ArrayList<DumbBall>();
-	double time;
+	public final ArrayList<DumbBall> dumbBalls;
+	public final double time;
 	Image(ArrayList<DumbBall> a, double time){
 		dumbBalls = a;
 		this.time = time;
