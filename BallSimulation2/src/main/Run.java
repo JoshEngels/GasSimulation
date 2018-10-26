@@ -12,7 +12,9 @@ import javax.swing.JTextField;
 
 import display.BallDisplay;
 import display.ButtonDisplay;
+import display.Image;
 import display.StatisticsDisplay;
+import simulation.Constants;
 
 //if size less than two just display two
 //TODO: Advanced changes to simulation

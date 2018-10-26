@@ -6,6 +6,8 @@ import static main.PhysicalVector2D.sub;
 
 import java.util.ArrayList;
 
+import simulation.Constants;
+
 
 public class CollisionLogic {
 

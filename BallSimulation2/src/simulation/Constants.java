@@ -1,8 +1,10 @@
-package main;
+package simulation;
 
 import java.awt.Toolkit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import main.Ball;
 
 public class Constants {
 
@@ -20,7 +22,7 @@ public class Constants {
 	public final static int FRAME_RATE = 1000;
 	public final static int MILLASECONDS_PER_FRAME = 1000 / FRAME_RATE;
 
-	public static AtomicInteger NUM_BALLS = new AtomicInteger(200);
+	public static AtomicInteger NUM_BALLS = new AtomicInteger(650);
 	
 	public final static double AREA_MASS_DEPENDENCE = 0;
 	public final static double MAX_VELOCITY = 400.0;

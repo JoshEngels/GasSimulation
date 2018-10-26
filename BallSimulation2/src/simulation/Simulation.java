@@ -1,4 +1,5 @@
-package main;
+package simulation;
+
 
 //TODO: Add ability to put in seeds
 //buttons: restart, random (with same stats), create
@@ -11,7 +12,8 @@ package main;
  */
 public class Simulation extends Thread{
 
+	public Constants c;
 	public static void createNewSimulation() {
-		
+		Constants c = new Constants();
 	}
 }

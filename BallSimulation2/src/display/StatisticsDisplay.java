@@ -9,10 +9,8 @@ import java.util.Map.Entry;
 import javax.swing.JPanel;
 
 import main.BallSimulation;
-import main.Constants;
-import main.DumbBall;
-import main.Image;
 import main.Run;
+import simulation.Constants;
 
 public class StatisticsDisplay extends JPanel{
 

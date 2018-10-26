@@ -7,9 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import main.Constants;
-import main.DumbBall;
-import main.Image;
+import simulation.Constants;
 
 public class BallDisplay extends JPanel{
     private BufferedImage paintImage = new BufferedImage(Constants.X_MAX.intValue(), Constants.Y_MAX_GRAPH, BufferedImage.TYPE_3BYTE_BGR);

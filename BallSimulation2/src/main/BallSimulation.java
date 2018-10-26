@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import display.DumbBall;
+import display.Image;
+import simulation.Constants;
+
 //TODO: Totally fix organization
 public class BallSimulation {
 	private ArrayList<Ball> balls = new ArrayList<Ball>();

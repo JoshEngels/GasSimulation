@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import main.Constants;
+import simulation.Constants;
 
 public class ButtonDisplay extends JPanel implements ActionListener{
 
@@ -27,6 +27,7 @@ public class ButtonDisplay extends JPanel implements ActionListener{
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		numberField = new JTextField();
+		numberField.setToolTipText("Input a new number of balls for when the reset button is pressed.");
 		JLabel numberName = new JLabel("New Number of Balls:");
 		numberName.setLabelFor(numberField);
 		numberField.addActionListener(this);
