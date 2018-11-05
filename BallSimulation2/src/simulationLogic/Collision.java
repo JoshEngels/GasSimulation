@@ -1,4 +1,4 @@
-package main;
+package simulationLogic;
 
 public class Collision{
 	final Ball b1;

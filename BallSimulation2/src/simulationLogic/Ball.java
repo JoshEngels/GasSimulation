@@ -1,5 +1,5 @@
-package main;
-import static main.PhysicalVector2D.*;
+package simulationLogic;
+import static simulationLogic.PhysicalVector2D.*;
 
 import java.awt.Color;
 

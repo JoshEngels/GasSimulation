@@ -1,12 +1,12 @@
-package main;
+package simulationLogic;
 
-import static main.PhysicalVector2D.dot;
-import static main.PhysicalVector2D.scale;
-import static main.PhysicalVector2D.sub;
+import static simulationLogic.PhysicalVector2D.dot;
+import static simulationLogic.PhysicalVector2D.scale;
+import static simulationLogic.PhysicalVector2D.sub;
 
 import java.util.ArrayList;
 
-import simulation.Constants;
+import simulationControl.Constants;
 
 
 public class CollisionLogic {

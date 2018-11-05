@@ -1,4 +1,4 @@
-package simulation;
+package simulationControl;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,8 +12,8 @@ import display.BallDisplay;
 import display.ButtonDisplay;
 import display.Image;
 import display.StatisticsDisplay;
-import main.Ball;
-import main.BallSimulation;
+import simulationLogic.Ball;
+import simulationLogic.BallSimulation;
 
 //TODO: Add ability to put in seeds
 //buttons: restart, random (with same stats), create

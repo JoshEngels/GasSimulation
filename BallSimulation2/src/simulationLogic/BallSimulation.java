@@ -1,4 +1,4 @@
-package main;
+package simulationLogic;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import display.DumbBall;
 import display.Image;
-import simulation.Constants;
+import simulationControl.Constants;
 
 //TODO: Totally fix organization
 public class BallSimulation {

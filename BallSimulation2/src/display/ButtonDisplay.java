@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import simulation.Constants;
+import simulationControl.Constants;
 
 public class ButtonDisplay extends JPanel implements ActionListener{
 

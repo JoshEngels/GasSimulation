@@ -1,10 +1,10 @@
-package simulation;
+package simulationControl;
 
 import java.awt.Toolkit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import main.Ball;
+import simulationLogic.Ball;
 
 public class Constants {
 

@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import simulation.Constants;
+import simulationControl.Constants;
 
 public class BallDisplay extends JPanel{
 	//private BufferedImage paintImage = new BufferedImage(Constants.X_MAX.intValue(), Constants.Y_MAX_GRAPH, BufferedImage.TYPE_3BYTE_BGR);

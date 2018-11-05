@@ -8,9 +8,9 @@ import java.util.Map.Entry;
 
 import javax.swing.JPanel;
 
-import main.BallSimulation;
-import main.Run;
-import simulation.Constants;
+import simulationControl.Constants;
+import simulationControl.Run;
+import simulationLogic.BallSimulation;
 
 public class StatisticsDisplay extends JPanel{
 

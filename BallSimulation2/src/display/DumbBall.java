@@ -2,7 +2,7 @@ package display;
 
 import java.awt.Color;
 
-import main.PhysicalVector2D;
+import simulationLogic.PhysicalVector2D;
 
 /**
  * Enough to display and thats it
