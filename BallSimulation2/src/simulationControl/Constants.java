@@ -17,7 +17,7 @@ public class Constants {
 
 	public final static Constants DEFAULT_CONSTANTS = new Constants(
 			SCREEN_WIDTH / 3, SCREEN_HEIGHT / 2, SCREEN_HEIGHT / 4,
-			1000, 50, 0, 400, 3, 10);
+			1000, 500, 0, 400, 3, 10);
 
 	
 	public Constants(int xMax, int yMaxSim, int yMaxGraph, int frameRate, int numBalls, double areaMassDependence,
@@ -49,6 +49,12 @@ public class Constants {
 	public double MIN_RADIUS;
 	public double MAX_RADIUS;
 	
-	
+	public static String[] getNames() {
+		return new String[] {"Width of Simulation (Pixels)", "Height of Simulation (Pixels)",
+		        "Height of Graph (Pixels)", "Frame Rate (Higher Recommended)", 
+		        "Number of Random Balls", "D = Area Mass Dependece (M = A^D)",
+		        "Maximum Velocity (Pixels per Second)",
+		        "Minimum Radius (Pixels)", "Maximum Radius (Pixels)"};
+	}
 
 }

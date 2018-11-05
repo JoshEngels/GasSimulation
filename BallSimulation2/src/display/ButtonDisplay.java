@@ -16,17 +16,29 @@ import simulationControl.Constants;
 
 public class ButtonDisplay extends JPanel implements ActionListener{
 
-	private JTextField numberField;
-	private JTextField xField;
-	private JTextField yField;
-	//private JButton reset;
+	//private JTextField numberField;
+	//private JTextField xField;
+	//private JTextField yField;
+	private JButton reset;
+	private boolean doReset = false;
+	
+	private JButton changeStats;
+	private boolean doStatChange = false;
 
 	public ButtonDisplay(){
-		super();
-		setLayout(new GridLayout(0,4));
+		setLayout(new GridLayout(0,2));
+		
+		reset = new JButton("Reset With Same Stats");
+		reset.addActionListener(this);
+		add(reset);
+		
+		changeStats = new JButton("Setup With Different Stats");
+		changeStats.addActionListener(this);
+		add(changeStats);
+		
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		numberField = new JTextField();
+		/*numberField = new JTextField();
 		numberField.setToolTipText("Input a new number of balls for when the reset button is pressed.");
 		JLabel numberName = new JLabel("New Number of Balls:");
 		numberName.setLabelFor(numberField);
@@ -52,18 +64,33 @@ public class ButtonDisplay extends JPanel implements ActionListener{
 
 		JButton reset = new JButton("Reset");
 		reset.addActionListener(this);
-		add(reset);
+		add(reset);*/
 
 
 
 
 	}
+	
+	public boolean reset() {
+		return doReset;
+	}
+	
+	public boolean changeStats() {
+		return doStatChange;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		if(e.getSource() == reset) {
+			doReset = true;
+		}
+		
+		if(e.getSource() == changeStats) {
+			doStatChange = true;
+		}
 		//This is ok because all done after the window renders. Will end up killing own thread after boolean set, but thats ok
-		String newNum = numberField.getText();
+		/*String newNum = numberField.getText();
 		String newX = xField.getText();
 		String newY = yField.getText();
 		try {
@@ -88,7 +115,7 @@ public class ButtonDisplay extends JPanel implements ActionListener{
 		}
 		catch(Exception er){}
 		
-		//Constants.reset.set(true);
+		//Constants.reset.set(true);*/
 	}
 
 }
