@@ -18,26 +18,32 @@ public class BallSimulation {
 	public Ball nextBall = null;
 	double minCollisionTime = Double.MAX_VALUE;
 
-	BallSimulation(ArrayList<Ball> balls){
-		iterator = 0;
+	private int maxX;
+	private int maxY;
+	private double areaMassDependence;
+	public BallSimulation(ArrayList<Ball> balls, int maxX, int maxY, double areaMassDependence){
+		numCollisions = 0;
 		this.balls = balls;
+		this.maxX = maxX;
+		this.maxY = maxY;
+		this.areaMassDependence = areaMassDependence;
+		
 		setupFirstCollision();
 	}
 
-	double currentTime = 0;
-
-	public static long iterator = 0; 
+	private double currentTime = 0;
+	private long numCollisions = 0; 
 	public Image getNextImage(double dt) {
 		double endTime = dt + currentTime;
 		if(dt < 0) {
 			throw new IllegalArgumentException("No going back. At least not yet");
 		}
-
+		
 		while(minCollisionTime + currentTime < endTime) {
 			Collision last = nextCollisions.get(nextBall);
 
-			CollisionLogic.update(balls, last, currentTime);
-			iterator++;
+			CollisionLogic.update(balls, last, currentTime, areaMassDependence);
+			numCollisions++;
 			
 			if(last.b2 != Constants.HORIZONTAL_WALL && last.b2 != Constants.VERTICAL_WALL) {
 				Color newColor = Math.random() > 0.5? last.b1.color: last.b2.color;
@@ -53,7 +59,6 @@ public class BallSimulation {
 				nextCollisionUpdate(last.b2);
 			}
 
-			//if(minCollisionTime < 0) System.out.println("uh oh");
 
 
 		}
@@ -74,15 +79,12 @@ public class BallSimulation {
 	private void setupFirstCollision() {
 
 		for(Ball b1 : balls){
-
 			Collision c = getNextCollisionWithBall(b1);
 			nextCollisions.put(b1, c);
 			if(c.absoluteTime - currentTime < minCollisionTime) {
 				nextBall = b1;
 				minCollisionTime = c.absoluteTime - currentTime;
 			}
-
-
 		}
 	}
 
@@ -100,7 +102,7 @@ public class BallSimulation {
 			shortestTime = wallCollisionTime;
 			b2 = wallCollisionTime == xTime? Constants.HORIZONTAL_WALL: Constants.VERTICAL_WALL;
 		}
-
+		
 		for(Ball test : balls){
 			if(b1 != test){
 				double time = getMinCollisionTime(b1, test);
@@ -168,7 +170,7 @@ public class BallSimulation {
 		return (-b + (positive? 1 : -1) * Math.sqrt(b * b - 4 * a * c)) / (2 * a);
 	}
 
-	private static double getXWallTime(Ball b1){
+	private double getXWallTime(Ball b1){
 		PhysicalVector2D pos = b1.getPos();
 		PhysicalVector2D vel = b1.getVel();
 		double tx;
@@ -179,12 +181,12 @@ public class BallSimulation {
 			tx = (pos.x - b1.getRadius()) / -vel.x;
 		}
 		else{
-			tx = (Constants.X_MAX.intValue() - b1.getRadius() - pos.x) / vel.x;
+			tx = (maxX - b1.getRadius() - pos.x) / vel.x;
 		}
 		return tx;
 	}
 
-	private static double getYWallTime(Ball b1) {
+	private double getYWallTime(Ball b1) {
 		PhysicalVector2D pos = b1.getPos();
 		PhysicalVector2D vel = b1.getVel();
 		double ty;
@@ -195,9 +197,13 @@ public class BallSimulation {
 			ty = (pos.y - b1.getRadius()) / -vel.y;
 		}
 		else{
-			ty = (Constants.Y_MAX_SIM.intValue() - b1.getRadius() - pos.y) / vel.y;
+			ty = (maxY - b1.getRadius() - pos.y) / vel.y;
 		}
 		return ty;
+	}
+
+	public long getNumCollisions() {
+		return numCollisions;
 	}
 
 

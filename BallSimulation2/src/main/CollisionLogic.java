@@ -18,7 +18,7 @@ public class CollisionLogic {
 	 * @param currentTime
 	 * @param collisions Assumed that this contains all collisions until currentTime + dt
 	 */
-	public static double update(double dt, ArrayList<Ball> balls, double currentTime, ArrayList<Collision> collisions){
+	public static double update(double dt, ArrayList<Ball> balls, double currentTime, ArrayList<Collision> collisions, double areaMassDependence){
 		double endTime = currentTime + dt;
 		double count = 0;
 		while(collisions.size() != 0){
@@ -28,7 +28,7 @@ public class CollisionLogic {
 				moveAllBalls(next.absoluteTime - currentTime, balls);
 				currentTime = next.absoluteTime;
 				if(next.b2 != Constants.HORIZONTAL_WALL && next.b2 != Constants.VERTICAL_WALL){
-					collision(next.b1, next.b2);
+					collision(next.b1, next.b2, areaMassDependence);
 				}
 				else{
 					wallCollision(next.b1, next.b2);
@@ -64,12 +64,12 @@ public class CollisionLogic {
 		}
 	}
 
-	public static void collision(Ball one, Ball two){
+	public static void collision(Ball one, Ball two, double areaMassDependence){
 		PhysicalVector2D negChange1 = calculateUnweightedChange(sub(one.getPos(), two.getPos()), sub(one.getVel(), two.getVel()));
 		PhysicalVector2D negChange2 = calculateUnweightedChange(sub(two.getPos(), one.getPos()), sub(two.getVel(), one.getVel()));
 		
-		double mass1 = Math.pow(one.getRadius(), Constants.AREA_MASS_DEPENDENCE);
-		double mass2 = Math.pow(two.getRadius(), Constants.AREA_MASS_DEPENDENCE);
+		double mass1 = Math.pow(one.getRadius(), areaMassDependence);
+		double mass2 = Math.pow(two.getRadius(), areaMassDependence);
 
 		one.setVelocity(sub(one.getVel(),  scale(negChange1, 2 * mass2 / (mass1 + mass2))));
 		two.setVelocity(sub(two.getVel(),  scale(negChange2, 2 * mass1 / (mass1 + mass2))));
@@ -80,10 +80,10 @@ public class CollisionLogic {
 		return scale(posChange, dot(velChange, posChange) / Math.pow(posChange.magnitude(),2));
 	}
 
-	public static void update(ArrayList<Ball> balls, Collision collision, double currentTime){
+	public static void update(ArrayList<Ball> balls, Collision collision, double currentTime, double areaMassDependence){
 		ArrayList<Collision> temp = new ArrayList<Collision>();
 		temp.add(collision);
-		update(collision.absoluteTime - currentTime, balls, currentTime, temp);
+		update(collision.absoluteTime - currentTime, balls, currentTime, temp, areaMassDependence);
 	}
 
 

@@ -69,26 +69,26 @@ public class ButtonDisplay extends JPanel implements ActionListener{
 		try {
 			int num = Integer.parseInt(newNum);
 			if(num > 0 & num <= 1000) {
-				Constants.NUM_BALLS.set(num);
+				//Constants.NUM_BALLS.set(num);
 			}
 		}
 		catch(Exception er){}
 		try {
 			int x = Integer.parseInt(newX);
 			if(x > 0 && x < Toolkit.getDefaultToolkit().getScreenSize().width) {
-				Constants.X_MAX.set(x);
+				//Constants.X_MAX.set(x);
 			}
 		}
 		catch(Exception er){}
 		try {
 			int y = Integer.parseInt(newY);
-			if(y > 0 && y < Toolkit.getDefaultToolkit().getScreenSize().height - Constants.Y_MAX_GRAPH) {
-				Constants.Y_MAX_SIM.set(y); //these do not actually have to be atomic. Only the boolean
-			}
+			//if(y > 0 && y < Toolkit.getDefaultToolkit().getScreenSize().height - Constants.Y_MAX_GRAPH) {
+				//Constants.Y_MAX_SIM.set(y); //these do not actually have to be atomic. Only the boolean
+			//}
 		}
 		catch(Exception er){}
 		
-		Constants.reset.set(true);
+		//Constants.reset.set(true);
 	}
 
 }

@@ -16,6 +16,24 @@ public class StatisticsDisplay extends JPanel{
 
 	private Image image;
 	private int numBalls;
+	int windowWidth;
+	int windowHeight;
+	long startTime;
+	long numCollisions;
+	
+	public StatisticsDisplay(int windowWidth, int windowHeight) {
+		this.windowHeight = windowHeight;
+		this.windowWidth = windowWidth;
+	}
+	
+	public void setStartTime(long startTime2) {
+		this.startTime = startTime2;
+	}
+	
+	public void setNumCollisions(long numCollisions) {
+		this.numCollisions = numCollisions;
+	}
+	
 	public void setImage(Image balls){
 		this.image = balls;
 		this.numBalls = balls.dumbBalls.size();
@@ -53,8 +71,7 @@ public class StatisticsDisplay extends JPanel{
 			}
 		}
 		
-		int windowWidth = Constants.X_MAX.intValue();
-		int windowHeight = Constants.Y_MAX_GRAPH;
+	
 		for(Entry<Color, ArrayList<Integer>> singleHistory : history.entrySet()) {
 			g.setColor(singleHistory.getKey());
 			for(int i = 0; i < singleHistory.getValue().size() - 1; i++) {
@@ -68,11 +85,11 @@ public class StatisticsDisplay extends JPanel{
 		double time = image.time;
 		g.setColor(Color.BLACK);
 		double simulationTime = (int)(time * 1000) / 1000.0;
-		double actualTime = (System.currentTimeMillis() - Run.originalStart) / 1000.0; 
+		double actualTime = (System.currentTimeMillis() - startTime) / 1000.0; 
 		g.drawString("Simulation Time: " + actualTime + " Seconds", 5, 12);
 		g.drawString("Actual Time: " + simulationTime + " Seconds", 5, 27);
 		g.drawString("Slow Down Factor: " + Math.round(((actualTime / simulationTime) * 1000)) / 1000.0, 5, 42);
-		g.drawString("Collisions Per Second: " + BallSimulation.iterator * 1000 / (System.currentTimeMillis() - Run.originalStart), 5, 57);
+		g.drawString("Collisions Per Second: " + numCollisions * 1000 / (System.currentTimeMillis() - startTime), 5, 57);
 
 		
 	}
